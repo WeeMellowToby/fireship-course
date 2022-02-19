@@ -4,11 +4,11 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import Loader from '../components/Loader'
 import toast from 'react-hot-toast'
-import { firestore, postToJSON } from '../lib/firebase'
+import { firestore, postToJSON,fromMillis } from '../lib/firebase'
 import { useState } from 'react'
 import PostFeed from '../components/PostFeed'
 
-const LIMIT = 1;
+const LIMIT = 5;
 export async function getServerSideProps(context) {
   const postsQuery = firestore
   .collectionGroup('posts')
@@ -31,7 +31,7 @@ export default function Home(props) {
     const cursor = typeof last.createdAt === 'number' ? fromMillis(last.createdAt) : last.createdAt
     const query = firestore
     .collectionGroup('posts')
-    where('published','==',true)
+    .where('published','==',true)
     .orderBy('createdAt','desc')
     .startAfter(cursor)
     .limit(LIMIT)

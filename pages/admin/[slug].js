@@ -1,16 +1,21 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import reactMarkdown from "react-markdown";
-import { firestore, auth, serverTimestamp } from '../../lib/firebase';
 import styles from '../../styles/Home.module.css';
+import AuthCheck from '../../components/AuthCheck';
+import { firestore, auth, serverTimestamp } from '../../lib/firebase';
+import ImageUploader from '../../components/ImageUploader'
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 import { useDocumentData } from 'react-firebase-hooks/firestore';
+import { useForm } from 'react-hook-form';
+import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
 export default function AdminPostEdit({}) {
     return(
         <main>
+          <AuthCheck>
             <PostManager />
+            </AuthCheck>
         </main>
     )
 }
@@ -49,8 +54,8 @@ function PostManager() {
   }
   
   function PostForm({ defaultValues, postRef, preview }) {
-    const { register, handleSubmit, reset, watch } = useForm({ defaultValues, mode: 'onChange' });
-  
+    const { register, handleSubmit, reset, watch, formState, errors } = useForm({ defaultValues, mode: 'onChange' });
+    const { isValid, isDirty } = formState;
     const updatePost = async ({ content, published }) => {
       await postRef.update({
         content,
@@ -72,15 +77,16 @@ function PostManager() {
         )}
   
         <div className={preview ? styles.hidden : styles.controls}>
-    
-          <textarea name="content" ref={register}></textarea>
+          <ImageUploader/>
+          <textarea {...register('content',{maxLength:20000,minLength:10,required:true})}name="content"/>
   
           <fieldset>
-            <input className={styles.checkbox} name="published" type="checkbox" ref={register} />
-            <label>Published</label>
+          <label>Published</label>
+            <input className={styles.checkbox} type="checkbox" {...register('published')} name="published"/>
+            
           </fieldset>
-  
-          <button type="submit" className="btn-green">
+          {errors && <p className="text-danger">{errors.message}</p>}
+          <button type="submit" className="btn-green" disabled={!isDirty || !isValid}>
             Save Changes
           </button>
         </div>

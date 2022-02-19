@@ -16,13 +16,14 @@ function PostItem ({post, admin = false}) {
             <Link href={`/${post.username}/${post.slug}`}>
                 <h2>
                     <a>{post.title}</a>
+                    
                 </h2>
             </Link>
             <footer>
                 <span>
-                    {wordCount} words. {minutesToRead} min read
+                    {" " + wordCount} words. {minutesToRead} min read &nbsp;
                 </span>
-                <span>{post.heartCount}Hearts</span>
+                <span>{post.heartCount} Hearts</span>
             </footer>
         </div>
     )
