@@ -30,7 +30,7 @@ export default function ImageUploader() {
                 <>
                 <label className="btn">
                     Upload Image
-                    <input type="file" onchange={uploadFile} accept="image/x-png,image/gif,image/jpeg"/>
+                    <input type="file" onChange={uploadFile} accept="image/x-png,image/gif,image/jpeg"/>
                 </label>
                 </>
             )}
