@@ -1,5 +1,5 @@
 import Link from "next/link";
-import reactMarkdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
 
 
 export default function PostContent({post}) {
@@ -14,7 +14,8 @@ export default function PostContent({post}) {
                     <a className="text-info">@{post.username}</a>
                 </Link>{' '}
                 on {createdAt.toISOString()}
-                <reactMarkdown>{post?.content}</reactMarkdown>
+                <br/>
+                <ReactMarkdown>{post?.content}</ReactMarkdown>
             </span>
         </div>
     )
